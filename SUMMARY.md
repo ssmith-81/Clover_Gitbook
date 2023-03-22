@@ -36,7 +36,7 @@
     * [Code Details](examples/flight-tests/complex-trajectory-tracking/code-details.md)
     * [Feedforward Simple Offboard](examples/flight-tests/complex-trajectory-tracking/feedforward-simple-offboard.md)
 * [Auto-Tuning](examples/auto-tuning/README.md)
-  * [Auto-Tune Control Theory](examples/auto-tuning/auto-tune-control-theory.md)
+  * [Auto-Tune Parameter](examples/auto-tuning/auto-tune-parameter.md)
 
 ## Hardware in the Loop Simulations
 

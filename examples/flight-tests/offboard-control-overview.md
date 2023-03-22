@@ -1,5 +1,5 @@
 ---
-description: Fix this yuck
+description: Offboard control architecture overview using Clover platform
 ---
 
 # Offboard Control Overview
@@ -26,7 +26,11 @@ The position control module is in the inertial reference frame and the attitude 
 |                | Total thrust setpoint                 |
 |                | Actuator input setpoint               |
 
-Using Offboard control mode allows the user to autonomously control the Clover without using the RC transmitter. It means we can send setpoints to the control signals as desired. Each control level offers an additional layer of control allowing for an easier implementation for the user. We will discuss various publishing methods used for autonomous control.
+For the interest of the reader, a brief overview of the control structure and important control parameters within PX4 are explained in the following video:
+
+{% embed url="https://www.youtube.com/watch?v=nEo4WGl4Lgc" %}
+
+Using Offboard control mode allows the user to autonomously control the Clover without using the RC transmitter. This means we can send setpoints to the control signals as desired. A quadcopter is inherently very unstable therefore each control level offers an additional layer of stability allowing for an easier implementation for the user. We will discuss various publishing methods used for autonomous control.
 
 The current simpleoffboard module provided by Clover has three main publishing functions. A description of this module can be found on the [COEX website](https://clover.coex.tech/en/simple\_offboard.html#autonomous-flight). The publishing method and how PX4 control architecture handles these messages will be described in the following sections. The five main functions of interest are listed:
 
@@ -46,7 +50,7 @@ From the figure, there are three locations to publish setpoints to. The first be
 
 #### Navigate
 
-The navigate function publishes position setpoints to <mark style="color:yellow;">r\_sp</mark>, <mark style="color:yellow;"></mark> it does by publishing on the <mark style="color:red;">mavros/setpoint\_position/local</mark> topic of type [geometry\_msgs/PoseStamped](http://docs.ros.org/en/api/geometry\_msgs/html/msg/PoseStamped.html). It does it in a special way where it will take the speed from the user; all this does is set the slope of the position publishing to allow the Clover to track the position at a relative speed rather then just sending a step input as done by the set\_position function. Also, this assumes the user is leaving the yaw alone or publishing a new value, it the user publishes yaw rate it will publish the position and yaw rate on the <mark style="color:red;">mavros/setpoint\_raw/local</mark> topic of time [mavros\_msgs/PositionTarget](http://docs.ros.org/en/api/mavros\_msgs/html/msg/PositionTarget.html)....
+The navigate function publishes position setpoints to <mark style="color:yellow;">r\_sp</mark>, <mark style="color:yellow;"></mark> it does by publishing on the <mark style="color:red;">mavros/setpoint\_position/local</mark> topic of type [geometry\_msgs/PoseStamped](http://docs.ros.org/en/api/geometry\_msgs/html/msg/PoseStamped.html). It does it in a special way where it will take the speed from the user; all this does is set the slope of the position publishing to allow the Clover to track the position at a relative speed rather then just sending a step input as done by the set\_position function. Also, this assumes the user is leaving the yaw alone or publishing a new value, if the user publishes yaw rate it will publish the position and yaw rate on the <mark style="color:red;">mavros/setpoint\_raw/local</mark> topic of time [mavros\_msgs/PositionTarget](http://docs.ros.org/en/api/mavros\_msgs/html/msg/PositionTarget.html)....
 
 
 
@@ -54,7 +58,7 @@ It also gives the user the ability to publish yaw or yaw\_rateThis is a simple b
 
 #### set\_position
 
-The set\_position function publishes setpoints to <mark style="color:yellow;">r\_sp</mark> by publishing on the <mark style="color:red;">mavros/setpoint\_position/local</mark> topic of type [geometry\_msgs/PoseStamped](http://docs.ros.org/en/api/geometry\_msgs/html/msg/PoseStamped.html).
+The set\_position function publishes setpoints to <mark style="color:yellow;">r\_sp</mark> by publishing on the <mark style="color:red;">mavros/setpoint\_position/local</mark> topic of type [geometry\_msgs/PoseStamped](http://docs.ros.org/en/api/geometry\_msgs/html/msg/PoseStamped.html). While you can use this function in a while loop within a python script to publish position in a complex trajectory, it is still very limited as it only allows you to publish setpoints to <mark style="color:yellow;">r\_sp</mark> whether a step input or a more complicated trajectory within a while loop using various equations. This is an issue because without feedforward control (using velocity, acceleration, etc..) PID control can only allow for relative tracking with the Clover will lagging behind the setpoints.
 
 * set\_position
 * set\_velocity

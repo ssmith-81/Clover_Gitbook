@@ -39,3 +39,7 @@ The above example uses MAVSDK for offboard control, where the method with the Cl
 ### SITL Example with PX4 powered COEX Clover gazebo simulator
 
 {% embed url="https://www.youtube.com/watch?v=Zam59C7jYm8&ab_channel=SeanSmith" %}
+
+### Hardware example with COEX Clover in OptiTrack motion capture volume
+
+{% embed url="https://www.youtube.com/watch?v=Is1K0qvCZms" %}

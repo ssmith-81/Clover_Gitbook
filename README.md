@@ -2,7 +2,8 @@
 description: >-
   Introduces the motion capture system setup with the COEX Clover and its
   purpose.
-coverY: 0
+cover: .gitbook/assets/drone_leave_copy.png
+coverY: 88
 ---
 
 # 🌎 Motion Capture System with Clover

@@ -41,7 +41,7 @@ A better network connection topology is having all the machines working together
 {% hint style="info" %}
 To configure the wpa\_supplicant.conf file use sudo for permission. Also, the permanently set static IP address of the Pi has been turned off so in order to ssh connect to the Pi. You need the one assigned when it is connected to the wifi router. This can be found by connecting the Pi to a monitor, and using a keyboard login with:
 
-* Username: Pi
+* Username: pi
 * Password: raspberry
 {% endhint %}
 

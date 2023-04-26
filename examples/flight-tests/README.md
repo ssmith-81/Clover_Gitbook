@@ -2,6 +2,8 @@
 description: >-
   With hardware and data transfer configured, it is now time to prepare flight
   tests.
+cover: ../../.gitbook/assets/drone_leave_copy.png
+coverY: 89.23661485319516
 ---
 
 # Flight Tests
@@ -14,7 +16,7 @@ Alignment between the body frame of the Clover and reference frame of external p
 
 this alignment along with analysis of both the external pose estimates and onboard pose estimates can be done through RViz. The steps are illustrated:
 
-* Before remapping the <mark style="color:purple;">/vrpn\_</mark>_<mark style="color:purple;">client\_node/clover1/pose</mark> <mark style="color:red;"></mark>_ topic _to <mark style="color:red;">/mavros/vision</mark>_<mark style="color:red;">\_</mark>_<mark style="color:red;">pose/pose</mark> with_ topic\_tools, plot _<mark style="color:purple;">/vrpn\_client\_node/clover1/pose</mark>_ and _<mark style="color:yellow;">/mavros/local\_position/pose</mark>_ in RViz and see how well they are aligned. If they are not aligned, rotate the drone in the MoCap volume space until they are aligned. If the vision yaw and estimated yaw vary too much in the beginning, the vision yaw may not fuse with the estimated one and an error will occur. This also ensures the x-axis of the Clover corresponds with the x-axis of the Mocap as desired. Good alignment can be seen in the following figure:
+* Before remapping the <mark style="color:purple;">/vrpn\_</mark>_<mark style="color:purple;">client\_node/clover1/pose</mark>_ topic _to <mark style="color:red;">/mavros/vision</mark>_<mark style="color:red;">\_</mark>_<mark style="color:red;">pose/pose</mark> with_ topic\_tools, plot _<mark style="color:purple;">/vrpn\_client\_node/clover1/pose</mark>_ and _<mark style="color:yellow;">/mavros/local\_position/pose</mark>_ in RViz and see how well they are aligned. If they are not aligned, rotate the drone in the MoCap volume space until they are aligned. If the vision yaw and estimated yaw vary too much in the beginning, the vision yaw may not fuse with the estimated one and an error will occur. This also ensures the x-axis of the Clover corresponds with the x-axis of the Mocap as desired. Good alignment can be seen in the following figure:
 
 <figure><img src="../../.gitbook/assets/rviz_overlap.png" alt=""><figcaption><p>External pose estimation provided by MoCap aligned with the onboard pose estimation provided by Clover.</p></figcaption></figure>
 

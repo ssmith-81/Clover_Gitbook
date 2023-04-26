@@ -7,9 +7,3 @@ coverY: 0
 # PX4 Configuration Through QGC
 
 The configuration of the PX4 firmware onboard the drone is standard for any HITL setup therefore the steps needed to follow can be found in this [section](https://docs.px4.io/v1.12/en/simulation/hitl.html#setting-up-hitl) on the PX4 website.
-
-{% hint style="info" %}
-**Good to know:** you can embed public links, like this Typeform, to make data capture a breeze!
-{% endhint %}
-
-{% embed url="https://2w3pnm4iy73.typeform.com/to/e51Urcwb" %}

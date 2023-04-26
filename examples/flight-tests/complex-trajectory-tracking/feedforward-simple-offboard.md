@@ -8,7 +8,7 @@ As a side note, the reason I implemented this is because my nonlinear control sy
 
 The simple offboard module can be found [here](https://github.com/CopterExpress/clover/blob/master/clover/src/simple\_offboard.cpp) while the modified feedforward version can be found [here](https://github.com/ssmith-81/MoCap\_Clover/blob/master/simple\_offboard.cpp). We will go through the specific modifications and discuss what they do in the next section.
 
-### simple\_offboard.cpp feedforward modifications
+## simple\_offboard.cpp feedforward modifications
 
 The first function to look at is presented:
 
@@ -222,3 +222,44 @@ Keep in mind, if one desires to set the yaw rate, then feedforward velocity and 
 ### Cons:
 
 The issue with publishing feedforward velocity using this publishing method, is having discontinuities in the velocity (the function is not smooth). It will go from setting a constant value directly to zero. At low speeds this is not an issue but when the velocity increases it will overshoot the target location some as the Clover tries to quickly adjust to the changes velocity setpoint. Setting lower speeds can help adjust for this as the Clover tracks more closely (assuming well tuned controllers).
+
+## Using Simple Offboard Feedforward with SITL
+
+The modified Simple Offboard feedforward file ([simple\_offboard.cpp](https://github.com/ssmith-81/MoCap\_Clover/blob/master/simple\_offboard.cpp)) can be downloaded from the following repository:
+
+{% embed url="https://github.com/ssmith-81/MoCap_Clover/blob/master/figure8_com.py" %}
+
+with the code details explained [above](feedforward-simple-offboard.md). Once downloaded, the user can navigate to the current simple offboard file location within the simulation workspace:&#x20;
+
+```bash
+cd ~/catkin_ws/src/clover/clover/src
+```
+
+you can then delete the current [simple\_offboard.cpp](https://github.com/CopterExpress/clover/blob/master/clover/src/simple\_offboard.cpp) with the rm command:
+
+```bash
+rm simple_offboard.cpp
+```
+
+Replace it with the downloaded feedforward version in the same location (`catkin_ws/src/clover/clover/src`) then rebuild the workspace with the following:
+
+```bash
+cd ~/catkin_ws
+catkin_make
+```
+
+## Using the Simple Offboard feedforward for experiment
+
+The process for real Clover testing is the same as simulation, we just need to get the file from your computer to the Raspberry Pi onboard the Clover. The fastest way to copy files to your Raspberry Pi is with SCP, which stands for “secure copy”. The following steps assume the user has successfully configured the Clover Raspberry Pi for autonomous flight with the motion capture system, i.e. connected to an external network with internet.
+
+1. Download the [simple\_offboard.cpp](https://github.com/ssmith-81/MoCap\_Clover/blob/master/simple\_offboard.cpp) script from the following repository:
+
+{% embed url="https://github.com/ssmith-81/MoCap_Clover" %}
+
+2. The Clover is connected to an external network with internet access as described in Section [Network Topology and Raspberry Pi Configuration](../../../data-transfer/feeding-pose-data-into-ros-on-raspberry-pi/network-topology-and-raspberry-pi-configuration.md). Therefore the following scp command can be used on the users computer (connected on the same network) to transfer the simple offboard C++ script `simple_offboard.cpp` from the current folder on your pc to the `src` folder within the Clover workspace on the Raspberry Pi:
+
+```bash
+scp simple_offboard.cpp pi@192.168.0.187:catkin_ws/src/clover/clover/src
+```
+
+This is assuming `192.168.0.187` is the raspberry Pi IP address, replace it with your IP address once you [identify it](../../../data-transfer/feeding-pose-data-into-ros-on-raspberry-pi/network-topology-and-raspberry-pi-configuration.md). More details on the scp command can be found [here](https://howchoo.com/pi/how-to-transfer-files-to-the-raspberry-pi).

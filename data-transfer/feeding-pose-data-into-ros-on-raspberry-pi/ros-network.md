@@ -38,4 +38,4 @@ The RPi\_ip was simply determined in section [Network Topology](network-topology
 When the roslaunch command is run to launch the vrpn ROS driver, if it is not connected to the RPi ROS master then the topic will only be connected to the Ubuntu ROS master and can't be accessed on the RPi.&#x20;
 {% endhint %}
 
-The RPi now has access to the Clover pose data streamed through Ubuntu on the topic <mark style="color:blue;">/vrpn\_client\_node/clover1/pose</mark>.&#x20;
+The raspberry Pi now has access to the Clover pose data streamed through Ubuntu on the topic <mark style="color:blue;">/vrpn\_client\_node/clover1/pose</mark>.&#x20;

@@ -4,9 +4,13 @@ description: This section outlines the steps in sending the pose data to the PX4
 
 # Feeding Pose Data to PX4
 
-With the pose data being streamed on an individual topic within ROS on the RPi, the flight controller must be set so it can accept the the external pose data. PX4 has two state estimators, **EKF2** (default estimator) an extended Kalman filter, and **LPE** which is a local position estimator.
+With the pose data being streamed on an individual topic within ROS on the raspberry Pi, the flight controller must be set so it can accept the the external pose data. PX4 has two state estimators, **EKF2** (default estimator) an extended Kalman filter, and **LPE** which is a local position estimator.
 
-At this moment the Clover is configured to stream pose data on the mavros vision topic (<mark style="color:blue;">/mavros/vision\_pose/pose</mark>) being the same one used for the ArUco marker system. The mocap topic (<mark style="color:blue;">/mavros/mocap/pose</mark>) is not active in mavros. This is fine as both estimators can use the vision pipeline where EKF2 strictly uses the vision one and LPE can use both mocap or vision pipelines. More details can be found [here](https://docs.px4.io/main/en/ros/external\_position\_estimation.html#px4-mavlink-integration).
+At this moment the Clover is configured to stream pose data on the mavros vision topic (<mark style="color:blue;">/mavros/vision\_pose/pose</mark>) being the same one used for the ArUco marker system. The mocap topic (<mark style="color:blue;">/mavros/mocap/pose</mark>) is not active in the [mavros.launch](https://github.com/CopterExpress/clover/blob/master/clover/launch/mavros.launch) from Clover. This is fine as both estimators can use the vision pipeline where EKF2 strictly uses the vision one and LPE can use both mocap or vision pipelines. More details can be found [here](https://docs.px4.io/main/en/ros/external\_position\_estimation.html#px4-mavlink-integration).
+
+{% hint style="info" %}
+Some MAVROS plugins are disabled by default in the `clover` package in order to save resources. For more information, see the `plugin_blacklist` parameter in `/home/pi/catkin_ws/src/clover/clover/launch/mavros.launch`.
+{% endhint %}
 
 It is recommended in the [PX4 website](https://docs.px4.io/main/en/ros/external\_position\_estimation.html#px4-mavlink-integration) to use the EKF2 estimator with the PX4 instead of the LPE as it is better tested and supported therefore that is the estimator that will be used.
 

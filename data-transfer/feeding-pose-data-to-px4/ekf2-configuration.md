@@ -18,7 +18,7 @@ The following will be a quick overview on the configurations needed using the Mo
 
 <figure><img src="../../.gitbook/assets/ekf2_mag.png" alt=""><figcaption></figcaption></figure>
 
-* There are some delay parameters that need to be set properly because they directly affect EKF estimation. For more information see the detailed document presented [before](https://docs.px4.io/main/en/advanced\_config/tuning\_the\_ecl\_ekf.html). The tuning process can be found [here](https://docs.px4.io/main/en/ros/external\_position\_estimation.html#ekf2-tuning-configuration) which is to handle the setup specific time delays. The delay parameter is set below and the methods used to approximate this can be found in a following [section](ekf2-and-lpe-tuning-and-consistancy.md) .
+* There are some delay parameters that need to be set properly because they directly affect EKF estimation. For more information see the detailed document presented [before](https://docs.px4.io/main/en/advanced\_config/tuning\_the\_ecl\_ekf.html). The tuning process can be found [here](https://docs.px4.io/main/en/ros/external\_position\_estimation.html#ekf2-tuning-configuration) which is to handle the setup specific time delays. The delay parameter is set below and the methods used to approximate this can be found in a following [section](ekf2-and-lpe-tuning-and-consistancy.md) . Insert pic..
 * Choose the height mode to be vision <mark style="color:orange;">EKF2\_HGT\_MODE = Vision</mark>
 
 <figure><img src="../../.gitbook/assets/ekf2_hgt.png" alt=""><figcaption></figcaption></figure>

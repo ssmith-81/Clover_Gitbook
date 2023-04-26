@@ -10,12 +10,16 @@ This section aims to give Clover users a better understanding on PX4 auto-tuning
 
 {% embed url="https://www.youtube.com/watch?v=Yzhjlo5FnCU&ab_channel=PX4Autopilot-OpenSourceFlightControl." %}
 
+The importance of tuning the inner control module is highlighted on the [PX4 website](https://docs.px4.io/main/en/config/autotune.html#auto-tuning):
+
+> Auto-tuning automates the process of tuning the PX4 rate and attitude controllers, which are the most important controllers for stable and responsive flight (other tuning is more "optional").
+
 ## Pre-tuning Conditions
 
 In order to autotune the Clover, it must be able to adequately stabilize itself before running autotune. This is because the process takes place while flying. Luckily for Clover, the standard airframe provided for [COEX Clover 4.2](https://docs.px4.io/main/en/airframes/airframe\_reference.html#quadrotor-x) sets the control gains well enough for this. Fine tuning the attitude control module is important for stable flight but also quite challenging, therefore auto tuning is a good start.&#x20;
 
 {% hint style="info" %}
-If the user desires, a [basic](https://docs.px4.io/main/en/config\_mc/pid\_tuning\_guide\_multicopter\_basic.html#multicopter-pid-tuning-guide-manual-basic) and [advanced](https://docs.px4.io/main/en/config\_mc/pid\_tuning\_guide\_multicopter\_basic.html#multicopter-pid-tuning-guide-manual-advanced) overview on manually tuning the PID gains is provided.
+If the user desires, a [basic](https://docs.px4.io/main/en/config\_mc/pid\_tuning\_guide\_multicopter\_basic.html#multicopter-pid-tuning-guide-manual-basic) and [advanced](https://docs.px4.io/main/en/config\_mc/pid\_tuning\_guide\_multicopter.html) overview on manually tuning the PID gains is provided.
 {% endhint %}
 
 ## Auto-tuning Environmental Setup

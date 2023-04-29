@@ -18,7 +18,7 @@ The following section gives brief descriptions on how the low level controllers 
 
 An overview of the PX4 control architecture will be presented to give the user a better understanding one how to publish setpoints, how they are handled and what kind of control is needed. A simplified overview of the control structure within PX4 can be seen:
 
-<figure><img src="../../.gitbook/assets/px4_control_structure.jpg" alt=""><figcaption><p>PX4 control architecture overview [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-control-architecture">https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-control-architecture</a>]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/px4_control_structure.jpg" alt=""><figcaption><p>PX4 control architecture overview [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-control-architecture">reference</a>]</p></figcaption></figure>
 
 The position control module is in the inertial reference frame and the attitude control module is in the body reference frame. The innermost controllers are the angular rate controllers and the outer most ones are the position controllers where PID stands for Proportional, Integral, and Derivative controllers. It is assumed the user has a basic understanding of PID controller. A table highlighting each parameter from the figure is presented:
 

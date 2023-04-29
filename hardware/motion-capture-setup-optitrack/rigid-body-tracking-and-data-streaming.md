@@ -59,9 +59,17 @@ Firewall or anti-virus software can block network traffic, so make sure these ap
 
 The data streaming method used in this tutorial is [VRPN streaming](https://docs.optitrack.com/motive/data-streaming#vrpn-sample). However, I implemented a UDP streaming method in conjunction with [NatNek SDK](https://docs.optitrack.com/motive/data-streaming#natnet-sdk) that is more reliable and I prefer. Providing a brief tutorial in the future on this method is on my to do list. For VRPN streaming, follow these steps:
 
-* [Enable Frame Broadcast and VRPN streaming](https://v22.wiki.optitrack.com/index.php?title=Data\_Streaming\_Pane): inser pic
-* Note down the IP address given to the OptiTrack PC as it will be used when feeding pose data to the Clover: insert pic
-* In the Advanced Network Options in the Data Streaming pane set the Up axis to be the Z-axis (the default is Y). Insert pic:
+* [Enable Frame Broadcast and VRPN streaming](https://v22.wiki.optitrack.com/index.php?title=Data\_Streaming\_Pane):&#x20;
+
+<figure><img src="../../.gitbook/assets/image_editor_vrpn.png" alt=""><figcaption></figcaption></figure>
+
+* Note down the IP address given to the OptiTrack PC as it will be used when feeding pose data to the Clover:&#x20;
+
+<figure><img src="../../.gitbook/assets/ip_image_edit.png" alt=""><figcaption></figcaption></figure>
+
+* In the Advanced Network Options in the Data Streaming pane set the Up axis to be the Z-axis (the default is Y):
+
+<figure><img src="../../.gitbook/assets/axis_up_image_edit.png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
 It is very important that you align the forward direction of the Clover with the x-axis of your motion capture volume before creating the rigid body in motive. This x-axis was previously defined when setting the ground plane during calibration (it can simply be viewed in the motive software). If this is not done, the external vision data may not fuse with the onboard pose estimate i.e. fusion errors. If it does fuse, the yaw offset between the drones body frame and motion capture system reference frame will result in the Clover being unable to follow set-points i.e. uncontrollable.

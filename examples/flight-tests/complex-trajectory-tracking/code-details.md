@@ -1,7 +1,12 @@
 # Code Details
 
-The script used to track the figure-8 with the Clover platform can be seen in the following:
+The script used to track the figure-8 with the Clover platform can be found in the following repository:
 
+{% embed url="https://github.com/ssmith-81/MoCap_Clover" %}
+
+The code details for SITL are repeated here:
+
+{% code lineNumbers="true" %}
 ```python
 #!/usr/bin/python
 
@@ -9,6 +14,9 @@ The script used to track the figure-8 with the Clover platform can be seen in th
 # *
 # * Author: Sean Smith <s.smith@dal.ca>
 # *
+# * Distributed under MIT License (available at https://opensource.org/licenses/MIT).
+# * The above copyright notice and this permission notice shall be included in all
+# * copies or substantial portions of the Software.
 
 
 import rospy
@@ -21,8 +29,7 @@ import tf
 import numpy as np
 
 # Could plot the stored data in SITL (not hardware) if desired:
-# import matplotlib
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 from time import sleep
@@ -99,10 +106,10 @@ class clover:
 		self.FRAME           = REF_FRAME                # Reference frame for complex trajectory tracking
 
 		
-		# Publisher which will publish to the topic '/mavros/setpoint_raw/local'. This has a PositionTarget message type: link
+		# Publisher which will publish to the topic '/mavros/setpoint_raw/local'. This has a PositionTarget message type
 		self.publisher = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size=10)
 		
-		# Subscribe to drone state. Can use this to subscribe to the drone state with mavros, although the get_telemetry Clover function does this (does it?)
+		# Subscribe to drone state. Can use this to subscribe to the drone state with mavros, although the get_telemetry Clover function does this
 		self.state = rospy.Subscriber('mavros/state', State, self.updateState)
 
 		self.current_state = State()
@@ -275,36 +282,63 @@ class clover:
 			k = k+1
 			if k >= self.STEPS: 
 				self.navigate_wait(z=self.FLIGHT_ALTITUDE, yaw=float('nan'), speed=0.5, frame_id = self.FRAME)
-				#rospy.sleep(5)
 				break
 			rr.sleep()
 
-		# Wait for 5 seconds
-		rospy.sleep(2)
+		# Wait for 3 seconds
+		rospy.sleep(3)
 		# Perform landing
 		
 		res = land()
 		 
 		if res.success:
 			print('Drone is landing')
+			
 		#res = fcuModes()
 		#res.setAutoLandMode()
 
-		rospy.sleep(6)
-		# Debug section, need matplotlib to plot the results
-		#plt.plot(t,velx)
-		#plt.plot(t,posx)
-		#plt.plot(t,afx)
-		#plt.plot(t,yawc)
-		#plt.plot(t,yaw_ratec)
-		#plt.show()
+
+		# Debug section (plots all of the published data for analysis), need matplotlib to plot the results for SITL
+		plt.figure(1)
+		plt.subplot(211)
+		plt.plot(t,posx,'r',label='x-pos')
+		plt.plot(t,posy,'b--',label='y-pos')
+		plt.plot(t,posz,'g:',label='z-pos')
+		plt.legend()
+		plt.grid(True)
+		plt.ylabel('Position [m]')
+		plt.subplot(212)
+		plt.plot(t,velx,'r',label='x-vel')
+		plt.plot(t,vely,'b--',label='y-vel')
+		plt.plot(t,velz,'g:',label='z-vel')
+		plt.legend()
+		plt.grid(True)
+		plt.ylabel('Velocity [m/s]')
+		plt.xlabel('Time [s]')
+
+		plt.figure(2)
+		plt.subplot(211)
+		plt.plot(t, afx,'r',label='x-acc')
+		plt.plot(t, afy,'b--',label='y-acc')
+		plt.plot(t, afz,'g:',label='z-acc')
+		plt.ylabel('af [m/s^2]')
+		plt.legend()
+		plt.grid(True)
+		plt.subplot(212)
+		plt.plot(t,yawc,'r',label='yaw')
+		plt.ylabel('Magnitude')
+		plt.xlabel('Time [s]')
+		plt.plot(t,yaw_ratec,'b--',label='yaw_rate')
+		plt.legend()
+		plt.grid(True)
+		plt.show()
 		
-		rospy.spin() # press control + C, the node will stop.
+		# rospy.spin() # press control + C, the node will stop.
 
 if __name__ == '__main__':
 	try:
 		# Define the performance parameters here which starts the script
-		q=clover(FLIGHT_ALTITUDE = 1.0, RATE = 50, RADIUS = 0.8, CYCLE_S = 27, REF_FRAME = 'aruco_map')
+		q=clover(FLIGHT_ALTITUDE = 1.0, RATE = 50, RADIUS = 1, CYCLE_S = 18, REF_FRAME = 'aruco_map')
 		
 		q.main()
 		
@@ -312,3 +346,151 @@ if __name__ == '__main__':
 		pass
 
 ```
+{% endcode %}
+
+### The Code Explained
+
+This section will go over the Clover Class defined within the script, where everything before the class is standard function definitions with Simple Offboard and MAVROS.
+
+{% hint style="info" %}
+I will note, the release function defined on line 44 is not typically used, however it is needed for this implementation because we need to release or stop the 'SimpleOffboard' module (via navigate) from publishing while we provide setpoints for the figure-8.
+{% endhint %}
+
+The initialization function:
+
+```python
+def __init__(self, FLIGHT_ALTITUDE, RATE, RADIUS, CYCLE_S, REF_FRAME): 
+ 		
+ 		# Publisher which will publish to the topic '/mavros/setpoint_velocity/cmd_vel'.
+		self.velocity_publisher = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel',TwistStamped, queue_size=10)
+
+		# global static variables
+		self.FLIGHT_ALTITUDE = FLIGHT_ALTITUDE          # fgdf
+		self.RATE            = RATE                     # loop rate hz
+		self.RADIUS          = RADIUS                   # radius of figure 8 in meters
+		self.CYCLE_S         = CYCLE_S                  # time to complete one figure 8 cycle in seconds
+		self.STEPS           = int( self.CYCLE_S * self.RATE )
+		self.FRAME           = REF_FRAME                # Reference frame for complex trajectory tracking
+
+		
+		# Publisher which will publish to the topic '/mavros/setpoint_raw/local'. This has a PositionTarget message type
+		self.publisher = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size=10)
+		
+		# Subscribe to drone state. Can use this to subscribe to the drone state with mavros, although the get_telemetry Clover function does this (does it?)
+		self.state = rospy.Subscriber('mavros/state', State, self.updateState)
+
+		self.current_state = State()
+		self.rate = rospy.Rate(20)
+```
+
+initializes all of the important parameters. This includes:
+
+* FLIGHT\_ALTITUDE: altitude of Clover during flight
+* RATE: rate the publishing loop is ran at
+* RADIUS: of the figure-8
+* CYCLE\_S: This is the cycle speed or how long it will take to complete the figure-8. Set this reasonably as lowering the value will require the Clover to track faster.
+* STEPS: amount of data steps during publishing
+* REF\_FRAME: reference frame used, this will vary depending on setup. `aruco_map` frame will work in SITL or using markers with the Clover. You will set it to `map` when using the motion capture system.
+
+The `self.publisher` defines the topic to publish the setpoints on: `/mavros/setpoint_raw/local`
+
+The rest of the code is self explanatory and very logical. The function:
+
+```python
+def updateState(self, msg):
+```
+
+is a callback function for the state subscriber defined on line ??. This can be used by the user if desired. The function:
+
+```python
+def navigate_wait(self,x=0, y=0, z=0, yaw=float('nan'), yaw_rate=0, speed=0.5, frame_id='body', tolerance=0.2, auto_arm=False):
+```
+
+is a standard navigate function discusses on the [Clover website](https://clover.coex.tech/en/snippets.html#navigate\_wait) that waits on the Clovers arrival within some tolerance. The function defined as:
+
+```python
+def main(self):
+```
+
+is the main function that commands the Clover. The comments within the code give the reader an understanding on what every command does and its purpose. A summary of the function is listed:
+
+* Preliminary definitions are set
+* The Clover is commanded to takeoff to a hovering point using the `navigate_wait` function before beginning the figure-8.
+* A set of arrays are defined for storing data used for publishing setpoints and plotting results.
+* The first for\_loop is used to calculate all of the setpoints for position, velocity, acceleration and yaw using the equations discussed in [Complex Trajectory Tracking](./).
+* The second for\_loop determines the yaw rate for further feedforward publishing.
+* The rate of the publishing loop is defined with `rr = rospy.Rate(self.RATE)` and the `release()` function is used to stop 'simpleoffboard'/navigate from publishing setpoints.
+* The `while not rospy.is_shutdown():` loop publishes all of the determined setpoints until the figure-8 is complete. The variable `k` is iterated through until the `STEPS` are complete. In this case the figure-8 publishing stops and the `navigate_wait` function is used to command the Clover back to the starting position.
+* The loop is exited and the Clover is commanded to land with `res = land()`
+* The plotting section plots all of the logged setpoints for analyzing the published data.
+* The user can defined the important paramaters in line 331.
+
+### Adjusting Code for Hardware Implementation
+
+The script above and on the Github is setup to run within the SITL simulator. However, only a few changes need to be made in order for it to work with hardware and they are listed on the following subsections. The [matplotlib library](https://matplotlib.org/) is not installed in the Raspberry Pi and is not needed for hardware testing. Therefore remove the following lines from the code:
+
+```python
+import matplotlib.pyplot as plt
+```
+
+Also remove the entire plot section shown:
+
+```python
+# Debug section (plots all of the published data for analysis), need matplotlib to plot the results for SITL
+		plt.figure(1)
+		plt.subplot(211)
+		plt.plot(t,posx,'r',label='x-pos')
+		plt.plot(t,posy,'b--',label='y-pos')
+		plt.plot(t,posz,'g:',label='z-pos')
+		plt.legend()
+		plt.grid(True)
+		plt.ylabel('Position [m]')
+		plt.subplot(212)
+		plt.plot(t,velx,'r',label='x-vel')
+		plt.plot(t,vely,'b--',label='y-vel')
+		plt.plot(t,velz,'g:',label='z-vel')
+		plt.legend()
+		plt.grid(True)
+		plt.ylabel('Velocity [m/s]')
+		plt.xlabel('Time [s]')
+
+		plt.figure(2)
+		plt.subplot(211)
+		plt.plot(t, afx,'r',label='x-acc')
+		plt.plot(t, afy,'b--',label='y-acc')
+		plt.plot(t, afz,'g:',label='z-acc')
+		plt.ylabel('af [m/s^2]')
+		plt.legend()
+		plt.grid(True)
+		plt.subplot(212)
+		plt.plot(t,yawc,'r',label='yaw')
+		plt.ylabel('Magnitude')
+		plt.xlabel('Time [s]')
+		plt.plot(t,yaw_ratec,'b--',label='yaw_rate')
+		plt.legend()
+		plt.grid(True)
+		plt.show()
+		
+```
+
+#### Motion Capture System
+
+This section adjusts the code for use in the motion capture system. The pose is fed back with the motion capture system in the `map` reference frame. The reference frame is set in line 331 with the important parameters. This is listed as such:
+
+```python
+q=clover(FLIGHT_ALTITUDE = 1.0, RATE = 50, RADIUS = 1, CYCLE_S = 18, REF_FRAME = 'map')
+```
+
+One more change needs to be made, and that is manually changing the reference frame in line 140 which commands the Clover to take off as such:
+
+```python
+self.navigate_wait(z=self.FLIGHT_ALTITUDE, frame_id='map',auto_arm=True)
+```
+
+It was originally set to body because when using ArUco markers, the Clover must take off to a certain altitude above the markers before the camera can pick them up and localize itself.
+
+#### ArUco Marker Localization
+
+Other than removing the matplotlib related functions, nothing needs to be changed as long as an [ArUco marker map](https://clover.coex.tech/en/aruco\_map.html#map-based-navigation-with-aruco-markers) is being referenced. Single marker references can be easily used as well just follow the Clover website instructions:
+
+{% embed url="https://clover.coex.tech/en/aruco_marker.html#working-with-detected-markers" %}

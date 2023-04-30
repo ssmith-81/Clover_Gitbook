@@ -39,7 +39,7 @@ Paper coming soon...
 
 ### Grasping Experiment&#x20;
 
-insert video
+{% embed url="https://www.youtube.com/watch?v=P4aa8GVaKMM&ab_channel=ACMLabDal" %}
 
 ### Github
 

@@ -8,11 +8,11 @@ The developer of this material is a Graduate student conducting research in the 
 
 Because of this, I felt it would be a good idea to put together my findings in case other Clover users were interested in testing new localization methods. For this project I formulated detailed explanations on the development required for this setup along with a few interesting examples that can be tested on hardware or in the Software in the Loop (SITL) simulations.
 
-#### Debeloper
+#### Developer
 
 The list of team members:
 
-* Sean Smith, @ssmith\_81, engineer and developer: [Github](https://github.com/ssmith-81), [Linkedin](https://www.linkedin.com/in/sean-smith-uav).
+* Sean Smith, @ssmith\_81, roboticist and developer: [Github](https://github.com/ssmith-81), [Linkedin](https://www.linkedin.com/in/sean-smith-uav).
 
 <div>
 

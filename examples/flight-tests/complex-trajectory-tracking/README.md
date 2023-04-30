@@ -4,7 +4,7 @@ description: Tracking Bernoulli's Lemniscate (Figure 8) using MAVROS
 
 # Complex Trajectory Tracking
 
-<figure><img src="../../../.gitbook/assets/Lemniscate_of_Bernoulli (1).gif" alt=""><figcaption><p>Graphical representation of Bernoulli's Lamniscate (<a href="https://upload.wikimedia.org/wikipedia/commons/f/f1/Lemniscate_of_Bernoulli.gif">https://upload.wikimedia.org/wikipedia/commons/f/f1/Lemniscate_of_Bernoulli.gif</a>)</p></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/Lemniscate_of_Bernoulli (1).gif" alt=""><figcaption><p>Graphical representation of Bernoulli's Lamniscate [<a href="https://upload.wikimedia.org/wikipedia/commons/f/f1/Lemniscate_of_Bernoulli.gif">reference</a>].</p></figcaption></figure>
 
 Smooth analog trajectory can be discretized at a high enough rate to make PX4 follow smoothly. The first and second derivatives of position must be evaluated and sent to the PX4 for precise flight. The parametric equations of this trajectory can be found [here](https://en.wikipedia.org/wiki/Lemniscate\_of\_Bernoulli), and illustrated below:
 

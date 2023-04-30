@@ -54,7 +54,7 @@ The current simpleoffboard module provided by Clover has three main publishing f
 
 This is the method used throughput the rest of the documentation, and how Clover sets up the simpleoffboard module to control the Clover. It is similar to operating in [Position Mode](https://clover.coex.tech/en/modes.html#assisted-flight-modes) with the RC transmitter where velocity setpoints are used. High-level control commands are sent to the _PX4 such as_ position, velocity , or acceleration set-points. The _PX4_ will receive those set-points in the position control module to perform the necessary control actions before sending setpoints to the low-level controllers (e.g. attitude/engines control). Clover has developed a module that uses MAVROS to provide users a friendly and compact way in sending offboard commands to the Clover detailed [here](https://clover.coex.tech/en/simple\_offboard.html#autonomous-flight). Before explaining further, we can take a closer look at the position control module:
 
-<figure><img src="../../.gitbook/assets/position_control_module.png" alt=""><figcaption><p>PX4 position control module [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#combined-position-and-velocity-controller-diagram">https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#combined-position-and-velocity-controller-diagram</a>]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/position_control_module.png" alt=""><figcaption><p>PX4 position control module [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#combined-position-and-velocity-controller-diagram">reference</a>]</p></figcaption></figure>
 
 From the figure, there are three locations to publish setpoints to. The first being position setpoints to <mark style="color:yellow;">r\_sp</mark>, the second being velocity setpoints which would be fed into the velocity feedforward path <mark style="color:yellow;">v\_ff</mark>, and the third being acceleration setpoints fed to the acceleration feedforward path <mark style="color:yellow;">a\_ff</mark>. The three Clover simpleoffboard functions capable of sending setpoints to these gateways are discussed:
 
@@ -74,7 +74,7 @@ The <mark style="color:green;">set\_velocity</mark> function publishes setpoints
 
 The last two functions publish to the inner or low-level control module. A diagram illustrating these controllers can be found:
 
-<figure><img src="../../.gitbook/assets/control_diagram.png" alt=""><figcaption><p>PX4 attitude complete cascaded attitude control module.</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/control_diagram.png" alt=""><figcaption><p>PX4 complete cascaded attitude control module [<a href="https://px4summit2021.sched.com/event/m8VV/controllers-auto-tuning-for-multirotors-and-fixed-wing-vehicles-mathieu-bresciani-auterion">reference</a>].</p></figcaption></figure>
 
 The above figure is what is tuned automatically when you follow the steps in the [Auto-Tuning](../auto-tuning/) section.
 
@@ -82,7 +82,7 @@ The above figure is what is tuned automatically when you follow the steps in the
 
 A closer look at the Attitude controller can be seen:
 
-<figure><img src="../../.gitbook/assets/mc_attitude.jpg" alt=""><figcaption><p>PX4 attitude nonlinear proportional controller [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-attitude-controller">https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-attitude-controller</a>]</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/mc_attitude.jpg" alt=""><figcaption><p>PX4 attitude nonlinear proportional controller [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-attitude-controller">reference</a>].</p></figcaption></figure>
 
 It is a proportional controller with some nonlinear components to it. The <mark style="color:green;">set\_attitude</mark> publishes to the quarternion setpoint <mark style="color:yellow;">q\_sp</mark> by first sending  roll, pitch, and yaw commands to the <mark style="color:red;">mavros/setpoint\_attitude/attitude</mark> topic of type [geometry\_msgs/PoseStamped](http://docs.ros.org/en/api/geometry\_msgs/html/msg/PoseStamped.html). This is eventually converted to a quarternion by PX4. The last setpoint provided is a thrust setpoint, this is normalized where 0 represents no throttle (propellers are stopped) and 1 represents full throttle. This is published on the <mark style="color:red;">mavros/setpoint\_attitude/thrust</mark> topic of type [mavros\_msgs/thrust](http://docs.ros.org/en/api/mavros\_msgs/html/msg/Thrust.html). Using this function is similar to operating in the [Stabilized Mode](https://clover.coex.tech/en/modes.html#manual-control).&#x20;
 
@@ -90,7 +90,7 @@ It is a proportional controller with some nonlinear components to it. The <mark 
 
 A closer look at the Rate controller can be seen:
 
-<figure><img src="../../.gitbook/assets/mc_angular_rate_diagram.jpg" alt=""><figcaption><p><a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-angular-rate-controller">https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-angular-rate-controller</a></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/mc_angular_rate_diagram.jpg" alt=""><figcaption><p>PX4 angular rate PID controller [<a href="https://docs.px4.io/v1.12/en/flight_stack/controller_diagrams.html#multicopter-angular-rate-controller">reference</a>]</p></figcaption></figure>
 
 From the figure, the Rate controller is a K-PID controller offering two configuration choices for PID (Standard and Parallel) with more information found in [Rate Controller](https://docs.px4.io/v1.12/en/config\_mc/pid\_tuning\_guide\_multicopter.html#rate-controller). The <mark style="color:green;">set\_rates</mark> publishes to the rate setpoint <mark style="color:yellow;">Omega\_sp</mark> by first sending  roll\_rate, pitch\_rate, and yaw\_rate commands to the <mark style="color:red;">mavros/setpoint\_raw/attitude</mark> topic of type [mavros\_msgs/AttitudeTarget](http://docs.ros.org/en/api/mavros\_msgs/html/msg/AttitudeTarget.html). Similar to the <mark style="color:green;">set\_attitude</mark> function it publishes a normalized thrust setpoint where 0 represents no throttle (propellers are stopped) and 1 represents full throttle. This is through the same gateway at the rest of the rate commands where the function in `simple_offboard` ignores attitude setpoints. However if the user desired to send rate and attitude setpoints simultaneously, the <mark style="color:green;">set\_rates</mark> function could easily be modified to do so. Using this function is similar to operating in the [ACRO mode](https://clover.coex.tech/en/modes.html).
 

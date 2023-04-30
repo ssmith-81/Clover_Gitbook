@@ -14,7 +14,7 @@ The method presented involves using an application called topic\_tools and is di
 
 The method of choice gives you the ability to turn the remap function on and off after launch. This functionality is useful because it allows you to view the <mark style="color:blue;">/vrpn\_client\_node/clover1/pose</mark> topic and <mark style="color:blue;">/mavros/vision\_pose/pose</mark> topic separately in [RViz](https://clover.coex.tech/en/rviz.html#using-rviz-and-rqt) to ensure the yaw offset is minimal before remapping and fusing the external vision pose and onboard pose estimation. A ROS package called [topic\_tools](http://wiki.ros.org/topic\_tools) can be used to remap the topic where the package source can be found in its github [here](https://github.com/ros/ros\_comm). The steps to build from source for ROS Noetic are shown:&#x20;
 
-```
+```bash
 cd /path/to/your/catkin_ws/src
 git clone -b melodic-devel https://github.com/ros/ros_comm.git
 cd /path/to/your/catkin_ws
@@ -25,7 +25,7 @@ catkin_make
 
 The following command can now be run on the Ubuntu Linux machine to remap the topic:
 
-```
+```bash
 rosrun topic_tools relay /vrpn_client_node/clover1/pose /mavros/vision_pose/pose
 ```
 

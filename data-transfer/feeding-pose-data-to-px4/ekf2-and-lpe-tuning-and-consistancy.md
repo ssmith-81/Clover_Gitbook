@@ -1,6 +1,6 @@
 ---
 description: >-
-  This section gives detail on how to analyses possible delays and EKF
+  This section gives detail on how to analyze possible delays and EKF
   performance.
 ---
 

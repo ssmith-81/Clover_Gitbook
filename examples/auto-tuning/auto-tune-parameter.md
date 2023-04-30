@@ -12,9 +12,9 @@ The main parameter that needs adjustment when setting the auto-tune module is th
 
 > In PID control, the rise time refers to the time it takes for the system to reach its desired setpoint from its initial state. Specifically, it is the time required for the system output to rise from a specified percentage (often 10% or 90%) of the steady-state value to the setpoint value for the first time after a step change in the input. A shorter rise time indicates a faster response and a more agile system. However, too short of a rise time can result in overshooting and oscillations, which can lead to instability and poor control performance. Balancing the rise time with other control objectives, such as overshoot and settling time, is an important aspect of designing a PID control system.
 
-Further understanding can be interpreted from this graph:
+Further understanding can be interpreted from this step-response plot:
 
-<figure><img src="../../.gitbook/assets/pid (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/pid (1).png" alt=""><figcaption><p>Closed loop step response [<a href="https://raceon.io/workshops/2_gain_scheduling/">reference</a>].</p></figcaption></figure>
 
 This is the systems closed loop unit step response. The system of interest is the attitude dynamics. As said previously, a shorter defined rise time indicates a faster response, this may be good when using small racer drones where fast adjustments are beneficial and possible. However a quick risetime may not be feasible for certain drones where it will attempt but overshoot and oscillate with poor control. This may be the case for larger drones.&#x20;
 

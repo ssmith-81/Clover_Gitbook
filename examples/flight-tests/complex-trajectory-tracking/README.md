@@ -18,7 +18,7 @@ $$
 \frac{dx}{dt} = \frac{dx}{da}\cdot \frac{\Delta a}{\Delta t}; \ \ \ \frac{dy}{dt} = \frac{dy}{da}\cdot \frac{\Delta a}{\Delta t}
 $$
 
-Where a constant angular rate of change was set, the acceleration is also given:
+where the product rule of a linearly increasing angle (constant angular rate) is is used to get the velocity from the change in position with angle. The acceleration is also given:
 
 
 

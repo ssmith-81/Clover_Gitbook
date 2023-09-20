@@ -49,3 +49,8 @@
 * [PX4 Configuration Through QGC](hardware-in-the-loop-simulations/px4-configuration-through-qgc.md)
 * [Launching the Clover Simulator in HITL Mode for HITL Simulations](hardware-in-the-loop-simulations/launching-the-clover-simulator-in-hitl-mode-for-hitl-simulations.md)
 * [Configure Clover Platform](hardware-in-the-loop-simulations/configure-clover-platform.md)
+
+## Miscellanous
+
+* [Working with NatNet SDK](miscellanous/working-with-natnet-sdk.md)
+* [Feeding Pose Data into Matlab](miscellanous/feeding-pose-data-into-matlab.md)

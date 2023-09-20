@@ -51,7 +51,7 @@ During the debugging stages of this project I was considering a wide range of so
   * [geometry\_msgs](http://wiki.ros.org/geometry\_msgs?distro=noetic)
   * [roscpp](http://wiki.ros.org/roscpp?distro=noetic)
   * [tf2\_ros](http://wiki.ros.org/tf2\_ros?distro=noetic)
-  * [vrpn](http://localhost:5000/s/q0NsGVgxmRD8c4yuqaAR/fundamentals)
+  * [vrpn](http://127.0.0.1:5000/s/q0NsGVgxmRD8c4yuqaAR/fundamentals)
 
 where the only one not contained in the Clover Pi image is the vrpn. If the vrpn ROS driver was successfully setup, the next steps would be configuring the motion capture system to stream data while connected to the raspberry Pi.&#x20;
 
